@@ -1,0 +1,19 @@
+POST http://localhost:8080/user-info
+Content-Type: application/json
+
+{
+  "email": "sun@test.com",
+  "firstName": "Bill",
+  "lastName": "Sun"
+}
+
+###
+GET http://localhost:8080/user-info/sun@test.com
+
+###
+GET http://localhost:8080/v2/api-docs
+
+###
+GET http://localhost:8080/user-info/exists?email=test@test.ru
+
+###
