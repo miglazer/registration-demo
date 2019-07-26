@@ -32,6 +32,7 @@ public class UserInfoController {
 
     @PutMapping
     public ResponseEntity<UserInfo> update(@RequestBody @Valid UserInfo userInfo) {
+        log.debug("PATCH /user-info UserInfo: {}", userInfo);
         UserInfo result = userInfoRepository.saveOrUpdate(userInfo);
         return ResponseEntity.ok(result);
     }
@@ -42,11 +43,15 @@ public class UserInfoController {
         return ResponseEntity.ok(new UserInfo("123", "qwe@er.com", "Bill", "Bill"));
     }
 
-    @GetMapping("/exists")
-    public ResponseEntity<UserInfoExistsResponse> exists(@RequestParam String email) {
+    @RequestMapping(value = "/{email}", method = RequestMethod.HEAD) //step number 1
+    public ResponseEntity exists(@PathVariable  String email) {
         log.debug("GET /user-info/{}", email);
         UserInfoExistsResponse result = userInfoRepository.existsByEmail(email);
-        return ResponseEntity.ok(result);
+        if(result.getUserInfoExists()){
+            return ResponseEntity.ok(result);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
